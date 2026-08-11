@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main(void)
+{
+    printf("CBC ciphertext error analysis\n\n");
+
+    printf("a) An error in C1 affects P1 and P2 only.\n");
+    printf("   Blocks P3, P4, ... are not affected.\n\n");
+
+    printf("b) A bit error in source P1 changes C1.\n");
+    printf("   Because C1 is incorrect, the receiver gets:\n");
+    printf("   - P1 corrupted unpredictably.\n");
+    printf("   - P2 has the corresponding bit flipped.\n");
+    printf("   - P3 onward are recovered correctly.\n");
+
+    return 0;
+}
