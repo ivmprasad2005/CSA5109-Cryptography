@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdint.h>
+
+/*
+ * Educational DES implementation skeleton.
+ * A production cryptographic program should use a vetted
+ * cryptographic library instead of implementing DES manually.
+ */
+
+uint64_t initial_permutation(uint64_t x)
+{
+    return x;
+}
+
+uint64_t final_permutation(uint64_t x)
+{
+    return x;
+}
+
+uint64_t des_encrypt(uint64_t plaintext, uint64_t key)
+{
+    uint64_t state = initial_permutation(plaintext);
+
+    /*
+       DES normally performs:
+       1. Initial permutation
+       2. Split into L and R
+       3. 16 Feistel rounds
+       4. Swap halves
+       5. Final permutation
+    */
+
+    for (int round = 0; round < 16; round++)
+    {
+        state ^= key;
+        state = (state << 1) | (state >> 63);
+    }
+
+    return final_permutation(state);
+}
+
+uint64_t des_decrypt(uint64_t ciphertext, uint64_t key)
+{
+    uint64_t state = ciphertext;
+
+    for (int round = 0; round < 16; round++)
+    {
+        state = (state >> 1) | (state << 63);
+        state ^= key;
+    }
+
+    return state;
+}
+
+int main(void)
+{
+    uint64_t plaintext, key;
+
+    printf("Enter plaintext in hexadecimal: ");
+    scanf("%llx", (unsigned long long *)&plaintext);
+
+    printf("Enter 64-bit key in hexadecimal: ");
+    scanf("%llx", (unsigned long long *)&key);
+
+    uint64_t cipher = des_encrypt(plaintext, key);
+    uint64_t recovered = des_decrypt(cipher, key);
+
+    printf("Ciphertext = %016llX\n",
+           (unsigned long long)cipher);
+
+    printf("Decrypted   = %016llX\n",
+           (unsigned long long)recovered);
+
+    return 0;
+}
