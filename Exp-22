@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+unsigned short xor16(unsigned short a, unsigned short b)
+{
+    return a ^ b;
+}
+
+unsigned short sdes_encrypt(unsigned short block,
+                            unsigned short key)
+{
+    /*
+       Replace this function with the S-DES
+       encryption implementation.
+    */
+
+    return block ^ key;
+}
+
+unsigned short sdes_decrypt(unsigned short block,
+                            unsigned short key)
+{
+    return sdes_encrypt(block, key);
+}
+
+int main(void)
+{
+    unsigned short iv = 0xAA;
+    unsigned short key = 0x1FD;
+
+    unsigned short plaintext[] = {
+        0x01, 0x23
+    };
+
+    unsigned short previous = iv;
+
+    printf("CBC Encryption\n");
+
+    for (int i = 0; i < 2; i++)
+    {
+        unsigned short x = plaintext[i] ^ previous;
+        unsigned short c = sdes_encrypt(x, key);
+
+        printf("C%d = %04X\n", i + 1, c);
+
+        previous = c;
+    }
+
+    return 0;
+}
