@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <string.h>
+
+void pad(char *input, int block)
+{
+    int len = strlen(input);
+    int padlen = block - (len % block);
+
+    if (padlen == 0)
+        padlen = block;
+
+    input[len] = 0x80;
+
+    for (int i = 1; i < padlen; i++)
+        input[len + i] = 0;
+
+    input[len + padlen] = '\0';
+}
+
+int main(void)
+{
+    char text[100] = "HELLO";
+
+    printf("Before padding: %s\n", text);
+
+    pad(text, 8);
+
+    printf("Padding applied.\n");
+    printf("A complete padding block is used when the message\n");
+    printf("already ends exactly on a block boundary.\n");
+
+    return 0;
+}
