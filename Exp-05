@@ -1,0 +1,76 @@
+#include <stdio.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = a % b;
+        a = b;
+        b = t;
+    }
+    return a;
+}
+
+int modInverse(int a) {
+    for (int x = 1; x < 26; x++) {
+        if ((a * x) % 26 == 1)
+            return x;
+    }
+    return -1;
+}
+
+int main() {
+    char text[500];
+    int a, b, choice;
+
+    printf("1. Encrypt\n");
+    printf("2. Decrypt\n");
+    printf("Choice: ");
+    scanf("%d", &choice);
+
+    printf("Enter a: ");
+    scanf("%d", &a);
+
+    printf("Enter b: ");
+    scanf("%d", &b);
+
+    if (gcd(a, 26) != 1) {
+        printf("Invalid a. gcd(a,26) must be 1.\n");
+        return 1;
+    }
+
+    b = (b % 26 + 26) % 26;
+
+    getchar();
+    printf("Enter text: ");
+    fgets(text, sizeof(text), stdin);
+
+    if (choice == 1) {
+        for (int i = 0; text[i] != '\0'; i++) {
+            if (text[i] >= 'A' && text[i] <= 'Z') {
+                int p = text[i] - 'A';
+                text[i] = 'A' + (a * p + b) % 26;
+            }
+            else if (text[i] >= 'a' && text[i] <= 'z') {
+                int p = text[i] - 'a';
+                text[i] = 'a' + (a * p + b) % 26;
+            }
+        }
+    }
+    else {
+        int inv = modInverse(a);
+
+        for (int i = 0; text[i] != '\0'; i++) {
+            if (text[i] >= 'A' && text[i] <= 'Z') {
+                int c = text[i] - 'A';
+                text[i] = 'A' + (inv * (c - b + 26)) % 26;
+            }
+            else if (text[i] >= 'a' && text[i] <= 'z') {
+                int c = text[i] - 'a';
+                text[i] = 'a' + (inv * (c - b + 26)) % 26;
+            }
+        }
+    }
+
+    printf("Result: %s", text);
+
+    return 0;
+}
