@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void decrypt(char *text, int key)
+{
+    for (int i = 0; text[i]; i++)
+    {
+        if (isalpha(text[i]))
+        {
+            int x = toupper(text[i]) - 'A';
+            putchar((x - key + 26) % 26 + 'A');
+        }
+        else
+            putchar(text[i]);
+    }
+}
+
+int main(void)
+{
+    char cipher[2000];
+    int freq[26] = {0};
+
+    printf("Enter ciphertext:\n");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    for (int i = 0; cipher[i]; i++)
+        if (isalpha(cipher[i]))
+            freq[toupper(cipher[i])-'A']++;
+
+    printf("\nPossible plaintexts:\n");
+
+    for (int key = 0; key < 26; key++)
+    {
+        printf("Key %2d: ", key);
+        decrypt(cipher, key);
+        printf("\n");
+    }
+
+    return 0;
+}
