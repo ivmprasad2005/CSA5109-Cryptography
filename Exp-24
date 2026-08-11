@@ -1,0 +1,49 @@
+#include <stdio.h>
+
+long long gcd(long long a, long long b)
+{
+    while (b)
+    {
+        long long t = b;
+        b = a % b;
+        a = t;
+    }
+
+    return a;
+}
+
+long long inverse(long long e, long long phi)
+{
+    for (long long d = 1; d < phi; d++)
+        if ((e * d) % phi == 1)
+            return d;
+
+    return -1;
+}
+
+int main(void)
+{
+    long long n = 3599;
+    long long e = 31;
+    long long p = 0, q = 0;
+
+    for (long long i = 2; i <= n; i++)
+    {
+        if (n % i == 0)
+        {
+            p = i;
+            q = n / i;
+            break;
+        }
+    }
+
+    long long phi = (p - 1) * (q - 1);
+    long long d = inverse(e, phi);
+
+    printf("p = %lld\n", p);
+    printf("q = %lld\n", q);
+    printf("phi(n) = %lld\n", phi);
+    printf("Private key d = %lld\n", d);
+
+    return 0;
+}
