@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void)
+{
+    srand((unsigned)time(NULL));
+
+    printf("DSA signature demonstration\n\n");
+
+    printf("Signing the same message twice:\n");
+
+    int k1 = rand() % 1000 + 1;
+    int k2 = rand() % 1000 + 1;
+
+    printf("First random k  = %d\n", k1);
+    printf("Second random k = %d\n", k2);
+
+    if (k1 != k2)
+        printf("The signatures will normally be different.\n");
+
+    printf("\nRSA deterministic signatures may be identical for the\n");
+    printf("same message and key unless randomized padding is used.\n");
+
+    return 0;
+}
