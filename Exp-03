@@ -1,0 +1,137 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+char matrix[5][5];
+
+void createMatrix(char *key) {
+    int used[26] = {0};
+    int r = 0, c = 0;
+
+    /* I and J are combined */
+    used['J' - 'A'] = 1;
+
+    for (int i = 0; key[i] != '\0'; i++) {
+        char ch = toupper(key[i]);
+
+        if (ch == 'J')
+            ch = 'I';
+
+        if (ch >= 'A' && ch <= 'Z' && !used[ch - 'A']) {
+            matrix[r][c++] = ch;
+            used[ch - 'A'] = 1;
+
+            if (c == 5) {
+                c = 0;
+                r++;
+            }
+        }
+    }
+
+    for (char ch = 'A'; ch <= 'Z'; ch++) {
+        if (!used[ch - 'A']) {
+            matrix[r][c++] = ch;
+
+            if (c == 5) {
+                c = 0;
+                r++;
+            }
+        }
+    }
+}
+
+void findPosition(char ch, int *r, int *c) {
+    if (ch == 'J')
+        ch = 'I';
+
+    for (int i = 0; i < 5; i++)
+        for (int j = 0; j < 5; j++)
+            if (matrix[i][j] == ch) {
+                *r = i;
+                *c = j;
+                return;
+            }
+}
+
+void encryptPair(char a, char b, char *x, char *y) {
+    int r1, c1, r2, c2;
+
+    findPosition(a, &r1, &c1);
+    findPosition(b, &r2, &c2);
+
+    if (r1 == r2) {
+        *x = matrix[r1][(c1 + 1) % 5];
+        *y = matrix[r2][(c2 + 1) % 5];
+    }
+    else if (c1 == c2) {
+        *x = matrix[(r1 + 1) % 5][c1];
+        *y = matrix[(r2 + 1) % 5][c2];
+    }
+    else {
+        *x = matrix[r1][c2];
+        *y = matrix[r2][c1];
+    }
+}
+
+int main() {
+    char key[100], input[500], text[500];
+    int n = 0;
+
+    printf("Enter keyword: ");
+    fgets(key, sizeof(key), stdin);
+
+    printf("Enter plaintext: ");
+    fgets(input, sizeof(input), stdin);
+
+    createMatrix(key);
+
+    printf("\nPlayfair Matrix:\n");
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++)
+            printf("%c ", matrix[i][j]);
+        printf("\n");
+    }
+
+    /* Remove spaces/punctuation and convert J -> I */
+    for (int i = 0; input[i] != '\0'; i++) {
+        if (isalpha(input[i])) {
+            char ch = toupper(input[i]);
+            if (ch == 'J')
+                ch = 'I';
+            text[n++] = ch;
+        }
+    }
+
+    text[n] = '\0';
+
+    /* Insert X between repeated letters */
+    char prepared[500];
+    int p = 0;
+
+    for (int i = 0; i < n; i++) {
+        prepared[p++] = text[i];
+
+        if (i + 1 < n && text[i] == text[i + 1]) {
+            prepared[p++] = 'X';
+        }
+    }
+
+    if (p % 2 != 0)
+        prepared[p++] = 'X';
+
+    prepared[p] = '\0';
+
+    printf("\nPrepared text: %s\n", prepared);
+
+    printf("Ciphertext: ");
+
+    for (int i = 0; i < p; i += 2) {
+        char x, y;
+        encryptPair(prepared[i], prepared[i + 1], &x, &y);
+        printf("%c%c", x, y);
+    }
+
+    printf("\n");
+
+    return 0;
+}
