@@ -1,0 +1,34 @@
+#include <stdio.h>
+
+unsigned short sdes_encrypt(unsigned short block,
+                            unsigned short key)
+{
+    /*
+       Replace with the S-DES encryption function.
+    */
+    return block ^ key;
+}
+
+int main(void)
+{
+    unsigned short counter = 0x00;
+    unsigned short key = 0x1FD;
+
+    unsigned short plaintext[] = {
+        0x01, 0x02, 0x04
+    };
+
+    for (int i = 0; i < 3; i++)
+    {
+        unsigned short stream =
+            sdes_encrypt(counter + i, key);
+
+        unsigned short cipher =
+            plaintext[i] ^ stream;
+
+        printf("Counter = %04X  Cipher = %04X\n",
+               counter + i, cipher);
+    }
+
+    return 0;
+}
