@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(void)
+{
+    char keyword[] = "CIPHER";
+    char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char cipher[27];
+
+    int used[26] = {0};
+    int k = 0;
+
+    for (int i = 0; keyword[i]; i++)
+    {
+        int x = toupper(keyword[i]) - 'A';
+
+        if (!used[x])
+        {
+            cipher[k++] = toupper(keyword[i]);
+            used[x] = 1;
+        }
+    }
+
+    for (int i = 0; i < 26; i++)
+    {
+        if (!used[i])
+            cipher[k++] = alphabet[i];
+    }
+
+    cipher[26] = '\0';
+
+    printf("Plain : %s\n", alphabet);
+    printf("Cipher: %s\n", cipher);
+
+    return 0;
+}
