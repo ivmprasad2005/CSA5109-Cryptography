@@ -1,0 +1,39 @@
+#include <stdio.h>
+
+long long gcd(long long a, long long b)
+{
+    while (b)
+    {
+        long long t = b;
+        b = a % b;
+        a = t;
+    }
+
+    return a;
+}
+
+int main(void)
+{
+    long long n, m;
+
+    printf("Enter n: ");
+    scanf("%lld", &n);
+
+    printf("Enter suspected plaintext block: ");
+    scanf("%lld", &m);
+
+    long long g = gcd(m, n);
+
+    if (g > 1 && g < n)
+    {
+        printf("Common factor found: %lld\n", g);
+        printf("RSA modulus can therefore be factored.\n");
+        printf("Other factor = %lld\n", n / g);
+    }
+    else
+    {
+        printf("No non-trivial common factor found.\n");
+    }
+
+    return 0;
+}
