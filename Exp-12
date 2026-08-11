@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MOD 26
+
+int mod(int x)
+{
+    x %= MOD;
+    if (x < 0)
+        x += MOD;
+    return x;
+}
+
+void encrypt(char *plain, char *cipher)
+{
+    int K[2][2] = {
+        {9, 4},
+        {5, 7}
+    };
+
+    int n = strlen(plain);
+
+    for (int i = 0; i < n; i += 2) {
+        int a = plain[i] - 'A';
+        int b = (i + 1 < n) ? plain[i + 1] - 'A' : 'X' - 'A';
+
+        cipher[i] =
+            'A' + mod(K[0][0] * a + K[0][1] * b);
+
+        cipher[i + 1] =
+            'A' + mod(K[1][0] * a + K[1][1] * b);
+    }
+
+    int m = (n % 2 == 0) ? n : n + 1;
+    cipher[m] = '\0';
+}
+
+void decrypt(char *cipher, char *plain)
+{
+    int Kinv[2][2] = {
+        {5, 12},
+        {15, 25}
+    };
+
+    int n = strlen(cipher);
+
+    for (int i = 0; i < n; i += 2) {
+        int a = cipher[i] - 'A';
+        int b = cipher[i + 1] - 'A';
+
+        plain[i] =
+            'A' + mod(Kinv[0][0] * a +
+                      Kinv[0][1] * b);
+
+        plain[i + 1] =
+            'A' + mod(Kinv[1][0] * a +
+                      Kinv[1][1] * b);
+    }
+
+    plain[n] = '\0';
+}
+
+int main(void)
+{
+    char plaintext[] =
+        "MEETMEATTHEUSUALPLACEATTENRATHERTHANEIGHTOCLOCK";
+
+    char ciphertext[200];
+    char recovered[200];
+
+    encrypt(plaintext, ciphertext);
+    decrypt(ciphertext, recovered);
+
+    printf("Plaintext : %s\n", plaintext);
+    printf("Ciphertext: %s\n", ciphertext);
+    printf("Decrypted : %s\n", recovered);
+
+    return 0;
+}
