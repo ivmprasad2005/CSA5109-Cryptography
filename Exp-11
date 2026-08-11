@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int main(void)
+{
+    char keyword[100];
+    char cipher[27];
+    int used[26] = {0};
+    int k = 0;
+
+    printf("Enter keyword: ");
+    scanf("%99s", keyword);
+
+    for (int i = 0; keyword[i] != '\0'; i++) {
+        int x = toupper((unsigned char)keyword[i]) - 'A';
+
+        if (x >= 0 && x < 26 && !used[x]) {
+            cipher[k++] = 'A' + x;
+            used[x] = 1;
+        }
+    }
+
+    for (int i = 0; i < 26; i++) {
+        if (!used[i])
+            cipher[k++] = 'A' + i;
+    }
+
+    cipher[26] = '\0';
+
+    printf("Plain : ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
+    printf("Cipher: %s\n", cipher);
+
+    return 0;
+}
