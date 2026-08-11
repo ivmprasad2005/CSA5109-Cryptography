@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char cipher[5000];
+    char key[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+    printf("Enter ciphertext:\n");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    printf("\nInitial possible plaintext:\n");
+
+    for (int i = 0; cipher[i]; i++)
+    {
+        if (isalpha(cipher[i]))
+        {
+            int x = toupper(cipher[i]) - 'A';
+            putchar(key[x]);
+        }
+        else
+            putchar(cipher[i]);
+    }
+
+    printf("\n\n");
+    printf("For a fully automatic attack, use an English n-gram/word-frequency\n");
+    printf("database and optimize the substitution key using hill climbing.\n");
+
+    return 0;
+}
