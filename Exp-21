@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    int block = 8;
+    char data[] = "HELLOWORLD";
+    int len = strlen(data);
+
+    int padding = block - (len % block);
+
+    if (padding == 0)
+        padding = block;
+
+    printf("Message length = %d\n", len);
+    printf("Block size = %d\n", block);
+    printf("Padding bytes = %d\n", padding);
+
+    printf("\nPadding rule: 1 bit followed by zero bits.\n");
+    printf("A complete padding block is added even when unnecessary.\n");
+    printf("This makes message termination/unpadding unambiguous.\n");
+
+    return 0;
+}
