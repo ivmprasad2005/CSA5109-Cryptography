@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+int main() {
+    char plain[500], key[27];
+    int used[26] = {0};
+
+    printf("Enter plaintext: ");
+    fgets(plain, sizeof(plain), stdin);
+
+    printf("Enter 26-letter substitution alphabet: ");
+    scanf("%26s", key);
+
+    if (strlen(key) != 26) {
+        printf("Key must contain exactly 26 letters.\n");
+        return 1;
+    }
+
+    for (int i = 0; i < 26; i++) {
+        key[i] = toupper(key[i]);
+
+        if (key[i] < 'A' || key[i] > 'Z' || used[key[i] - 'A']) {
+            printf("Invalid key: letters must be unique.\n");
+            return 1;
+        }
+
+        used[key[i] - 'A'] = 1;
+    }
+
+    for (int i = 0; plain[i] != '\0'; i++) {
+        if (isupper(plain[i]))
+            plain[i] = key[plain[i] - 'A'];
+        else if (islower(plain[i]))
+            plain[i] = tolower(key[plain[i] - 'a']);
+    }
+
+    printf("Ciphertext: %s", plain);
+
+    return 0;
+}
