@@ -1,0 +1,42 @@
+#include <stdio.h>
+
+long long modpow(long long a, long long e, long long n)
+{
+    long long r = 1;
+
+    while (e)
+    {
+        if (e & 1)
+            r = (r * a) % n;
+
+        a = (a * a) % n;
+        e >>= 1;
+    }
+
+    return r;
+}
+
+int main(void)
+{
+    long long n, e;
+
+    printf("Enter RSA modulus n: ");
+    scanf("%lld", &n);
+
+    printf("Enter public exponent e: ");
+    scanf("%lld", &e);
+
+    printf("\nRSA encryption of individual letters:\n");
+
+    for (int p = 0; p < 26; p++)
+        printf("%c -> %lld\n",
+               'A' + p,
+               modpow(p, e, n));
+
+    printf("\nAttack: build a codebook of the 26 possible ciphertexts.\n");
+    printf("Because there are only 26 possible plaintext values, RSA does\n");
+    printf("not provide semantic security when each character is encrypted\n");
+    printf("independently.\n");
+
+    return 0;
+}
