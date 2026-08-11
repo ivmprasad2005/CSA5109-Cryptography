@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int gcd(int a, int b)
+{
+    while (b)
+    {
+        int t = a % b;
+        a = b;
+        b = t;
+    }
+
+    return a;
+}
+
+int inverse(int a)
+{
+    for (int i = 1; i < 26; i++)
+        if ((a * i) % 26 == 1)
+            return i;
+
+    return -1;
+}
+
+int main(void)
+{
+    int a, b;
+
+    printf("Enter a: ");
+    scanf("%d", &a);
+
+    printf("Enter b: ");
+    scanf("%d", &b);
+
+    if (gcd(a, 26) != 1)
+    {
+        printf("Invalid a.\n");
+        printf("a must be relatively prime to 26.\n");
+        return 1;
+    }
+
+    int inv = inverse(a);
+
+    printf("Encryption: C = (%dp + %d) mod 26\n", a, b);
+    printf("Decryption: P = %d(C - %d) mod 26\n", inv, b);
+
+    char text[500];
+
+    printf("Enter plaintext: ");
+    getchar();
+    fgets(text, sizeof(text), stdin);
+
+    printf("Ciphertext: ");
+
+    for (int i = 0; text[i]; i++)
+    {
+        if (isalpha(text[i]))
+        {
+            int p = toupper(text[i]) - 'A';
+            int c = (a * p + b) % 26;
+
+            putchar(c + 'A');
+        }
+        else
+            putchar(text[i]);
+    }
+
+    return 0;
+}
