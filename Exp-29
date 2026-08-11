@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int main(void)
+{
+    /*
+       SHA-3 state = 1600 bits = 25 lanes.
+       With a 1024-bit block, the rate occupies 16 lanes.
+       Capacity occupies 9 lanes.
+
+       If permutation is ignored, zero capacity lanes remain zero
+       because no permutation moves information into them.
+    */
+
+    int rate_lanes = 1024 / 64;
+    int capacity_lanes = 25 - rate_lanes;
+
+    printf("Rate lanes     = %d\n", rate_lanes);
+    printf("Capacity lanes = %d\n", capacity_lanes);
+
+    printf("\nWithout permutation, the capacity lanes remain zero.\n");
+    printf("Therefore all capacity lanes can never become nonzero.\n");
+
+    return 0;
+}
