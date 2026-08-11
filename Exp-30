@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+unsigned int xor32(unsigned int a, unsigned int b)
+{
+    return a ^ b;
+}
+
+int main(void)
+{
+    unsigned int X = 0x12345678;
+    unsigned int T = 0xABCDEF01;
+
+    unsigned int second = xor32(X, T);
+
+    printf("X       = %08X\n", X);
+    printf("MAC T   = %08X\n", T);
+    printf("X XOR T = %08X\n", second);
+
+    printf("\nForged two-block message:\n");
+    printf("X || (X XOR T)\n");
+
+    return 0;
+}
