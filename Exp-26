@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main(void)
+{
+    printf("Bob's private key has been compromised.\n\n");
+
+    printf("Generating a new e and d with the same modulus is NOT safe.\n");
+    printf("The old modulus may still allow attacks depending on the\n");
+    printf("key-generation procedure.\n\n");
+
+    printf("Recommended solution:\n");
+    printf("Generate a completely new RSA key pair, including a new modulus.\n");
+
+    return 0;
+}
