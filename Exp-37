@@ -1,0 +1,53 @@
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main(void)
+{
+    char cipher[5000];
+
+    printf("Enter ciphertext:\n");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    /*
+       Standard English frequency order:
+       E T A O I N S H R D L U C M F Y W G P B V K X Q J Z
+    */
+
+    char english[] = "ETAOINSHRDLCUMWFGYPBVKJXQZ";
+    int freq[26] = {0};
+    int order[26];
+
+    for (int i = 0; cipher[i]; i++)
+        if (isalpha(cipher[i]))
+            freq[toupper(cipher[i]) - 'A']++;
+
+    for (int i = 0; i < 26; i++)
+        order[i] = i;
+
+    for (int i = 0; i < 25; i++)
+        for (int j = i + 1; j < 26; j++)
+            if (freq[order[j]] > freq[order[i]])
+            {
+                int t = order[i];
+                order[i] = order[j];
+                order[j] = t;
+            }
+
+    char map[26];
+
+    for (int i = 0; i < 26; i++)
+        map[order[i]] = english[i];
+
+    printf("\nPossible plaintext:\n");
+
+    for (int i = 0; cipher[i]; i++)
+    {
+        if (isalpha(cipher[i]))
+            putchar(map[toupper(cipher[i])-'A']);
+        else
+            putchar(cipher[i]);
+    }
+
+    return 0;
+}
