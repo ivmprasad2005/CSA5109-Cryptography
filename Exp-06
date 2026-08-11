@@ -1,0 +1,40 @@
+#include <stdio.h>
+#include <ctype.h>
+
+int main() {
+    char cipher[1000];
+
+    /*
+       Most frequent B -> E
+       Second most frequent U -> T
+
+       Therefore:
+       a = 3
+       b = 15
+       inverse of 3 mod 26 = 9
+    */
+
+    int a = 3;
+    int b = 15;
+    int inverse_a = 9;
+
+    printf("Enter affine ciphertext: ");
+    fgets(cipher, sizeof(cipher), stdin);
+
+    for (int i = 0; cipher[i] != '\0'; i++) {
+        if (isupper(cipher[i])) {
+            int c = cipher[i] - 'A';
+            int p = (inverse_a * (c - b + 26)) % 26;
+            cipher[i] = 'A' + p;
+        }
+        else if (islower(cipher[i])) {
+            int c = cipher[i] - 'a';
+            int p = (inverse_a * (c - b + 26)) % 26;
+            cipher[i] = 'a' + p;
+        }
+    }
+
+    printf("Decrypted text: %s", cipher);
+
+    return 0;
+}
