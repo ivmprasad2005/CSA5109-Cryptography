@@ -1,0 +1,22 @@
+#include <stdio.h>
+
+void xorBlock(unsigned char *a,
+              unsigned char *b,
+              unsigned char *out,
+              int n)
+{
+    for (int i = 0; i < n; i++)
+        out[i] = a[i] ^ b[i];
+}
+
+int main(void)
+{
+    printf("CBC mode with 3DES selected.\n\n");
+
+    printf("Security: 3DES is stronger than single DES.\n");
+    printf("Performance: DES is faster than 3DES.\n");
+    printf("Choice for security: 3DES\n");
+    printf("Choice for performance: DES\n");
+
+    return 0;
+}
