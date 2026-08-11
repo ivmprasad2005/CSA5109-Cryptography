@@ -1,0 +1,15 @@
+#include <stdio.h>
+
+int main(void)
+{
+    unsigned int C = 0x0FFFFFFF;
+    unsigned int D = 0x0FFFFFFF;
+
+    printf("C half = %07X\n", C);
+    printf("D half = %07X\n", D);
+
+    printf("C and D are independent 28-bit subsets.\n");
+    printf("Each DES subkey contains 24 bits from C and 24 bits from D.\n");
+
+    return 0;
+}
