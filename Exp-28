@@ -1,0 +1,56 @@
+#include <stdio.h>
+
+long long modpow(long long a, long long b, long long q)
+{
+    long long result = 1;
+
+    while (b)
+    {
+        if (b & 1)
+            result = (result * a) % q;
+
+        a = (a * a) % q;
+        b >>= 1;
+    }
+
+    return result;
+}
+
+int main(void)
+{
+    long long a, xA, xB, q;
+
+    printf("Enter public a: ");
+    scanf("%lld", &a);
+
+    printf("Enter modulus q: ");
+    scanf("%lld", &q);
+
+    printf("Enter Alice secret xA: ");
+    scanf("%lld", &xA);
+
+    printf("Enter Bob secret xB: ");
+    scanf("%lld", &xB);
+
+    /*
+       Correct DH:
+       Alice sends a^xA mod q
+       Bob sends a^xB mod q
+
+       If they send x^a instead:
+       Alice sends xA^a
+       Bob sends xB^a
+
+       This does not naturally give them the same shared secret.
+    */
+
+    long long A = modpow(xA, a, q);
+    long long B = modpow(xB, a, q);
+
+    printf("Alice sends: %lld\n", A);
+    printf("Bob sends: %lld\n", B);
+
+    printf("\nThe values generally do not produce a common secret.\n");
+
+    return 0;
+}
